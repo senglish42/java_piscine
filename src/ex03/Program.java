@@ -1,6 +1,5 @@
 package ex03;
 
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Program
@@ -8,53 +7,93 @@ public class Program
     public static void main(String[] args)
     {
         Scanner in = new Scanner(System.in);
-        int arr[] = new int[18];
+        Scanner g = new Scanner(System.in);
         int num = -1;
         int prev;
-        while (true)
+        int count = 0;
+        int grade;
+        long results = 0;
+        int prop = 1;
+        while (count != 18)
         {
             prev = num;
-            String[] week = in.nextLine().split(" ");
-            if (week[0].equals("42"))
+            String week = in.nextLine();
+            Scanner ch = new Scanner(week);
+            String w = ch.next();
+            if (w.equals("42"))
                 break ;
-            if (!week[0].toLowerCase().equals("week"))
+            if (!w.equals("Week"))
             {
-                System.out.print("Please enter a string starting from 'week'\n");
+                System.out.print("Please enter a string starting from 'Week'\n");
                 continue;
             }
-            num = Integer.parseInt (week[1]);
-            if (num < 1 || num > 18)
-                theIllegalArgument(in);
+            if (ch.hasNextInt())
+                num = ch.nextInt();
+            else
+                theIllegalArgument(in, g);
+            if (ch.hasNextInt())
+                theIllegalArgument(in, g);
+            ch.close();
+            if (num < 1)
+                theIllegalArgument(in, g);
             if (prev != -1 && prev >= num)
-                theIllegalArgument(in);
-            System.out.print("Input marks: ");
-            String fill[] = in.nextLine().split(" ");
-            if (fill.length < 5)
-                theIllegalArgument(in);
-            for (int convert = 0; convert < fill.length; ++convert)
-            {
-                int mark = Integer.parseInt(fill[convert]);
-                if (mark < 1 || mark > 9)
-                    theIllegalArgument(in);
-                if (convert == 0 || mark < arr[num - 1])
-                    arr[num - 1] = Integer.parseInt(fill[convert]);
-            }
+                theIllegalArgument(in, g);
+            grade = find_min(in, g, num);
+            if (grade == 0)
+                theIllegalArgument(in, g);
+            results += grade * prop;
+            prop *= 10;
+            count++;
         }
-        for (int count = 0; count < 18; ++count)
-        {
-            if (arr[count] != 0)
-            {
-                System.out.printf("Week %d ", count + 1);
-                for (int grade = 0; grade < arr[count]; ++grade)
-                    System.out.print("=");
-                System.out.print(">\n");
-            }
-        }
+        outputResults(results);
+        g.close();
+        in.close();
     }
-    public static void theIllegalArgument(Scanner in)
+    private static int find_min(Scanner in, Scanner g, int week)
+    {
+        System.out.print("Input marks: ");
+        int mark;
+        int check = 0;
+        int min = 0;
+        String grades = g.nextLine();
+        Scanner sc = new Scanner(grades);
+        if (!sc.hasNextInt())
+            theIllegalArgument(in, g);
+        while (sc.hasNextInt())
+        {
+            mark = sc.nextInt();
+            if (mark < 1 || mark > 9)
+                theIllegalArgument(in, g);
+            if (min == 0 || mark < min)
+                min = mark;
+            check++;
+        }
+        sc.close();
+        if (check != 5)
+            theIllegalArgument(in, g);
+        return min;
+    }
+    public static void theIllegalArgument(Scanner in, Scanner g)
     {
         in.close();
+        g.close();
         System.err.print("IllegalArgument\n");
         System.exit(-1);
+    }
+
+    private static void outputResults(long results)
+    {
+        int weeks;
+
+        weeks = 0;
+
+        for (long i = results; i > 0; i /= 10) {
+            weeks++;
+            System.out.print("Week " + weeks + " ");
+            for (int n = 0; n < i % 10; ++n) {
+                System.out.print('=');
+            }
+            System.out.println('>');
+        }
     }
 }
