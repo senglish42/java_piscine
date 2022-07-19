@@ -11,7 +11,14 @@ public class Program
         while (true)
         {
             System.out.print("Input a number: ");
-            int num = in.nextInt();
+            int num = 0;
+            if (in.hasNextInt())
+                num = in.nextInt();
+            else
+            {
+                in.close();
+                theIllegalArgument();
+            }
             int sum = addition(num);
             if (ifPrimary(sum))
                 count++;
@@ -51,5 +58,10 @@ public class Program
                 return false;
         }
         return true;
+    }
+    public static void theIllegalArgument()
+    {
+        System.err.print("IllegalArgument\n");
+        System.exit(-1);
     }
 }

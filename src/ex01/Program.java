@@ -7,8 +7,13 @@ public class Program
     {
         Scanner in = new Scanner(System.in);
         System.out.print("Input a number: ");
-        int num = in.nextInt();
-        in.close();
+        int num = 0;
+        if (in.hasNextInt())
+            num = in.nextInt();
+        else {
+            in.close();
+            theIllegalArgument();
+        }
         if (num < 1)
             theIllegalArgument();
         int count = 1;
