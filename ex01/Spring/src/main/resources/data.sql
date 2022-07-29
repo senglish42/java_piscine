@@ -1,4 +1,4 @@
 INSERT INTO users (email) VALUES ('senglish@student.21-school.ru');
-INSERT INTO users (email) VALUES ('chel@student.21-school.ru');
-INSERT INTO users (email) VALUES ('tmiranda@student.21-school.ru');
-INSERT INTO users (email) VALUES ('aeldridg@student.21-school.ru');
+INSERT INTO users (email) VALUES ('myael@student.21-school.ru');
+INSERT INTO users (email) VALUES ('csamuro@student.21-school.ru');
+INSERT INTO users (email) VALUES ('jareo@student.21-school.ru');

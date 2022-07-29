@@ -12,7 +12,7 @@ public class Program {
         UsersRepository usersRepository = context.getBean("usersRepositoryJdbc", UsersRepository.class);
         System.out.println(usersRepository.findAll());
 
-        System.out.println(usersRepository.findByEmail("hdfe@student.21-school.ru") );
+        System.out.println(usersRepository.findByEmail("awoods@student.21-school.ru") );
         System.out.println(usersRepository.findByEmail("senglish@student.21-school.ru") );
         System.out.println(usersRepository.findById(3L));
         System.out.println();
@@ -20,7 +20,7 @@ public class Program {
         usersRepository = context.getBean("usersRepositoryJdbcTemplate", UsersRepository.class);
         System.out.println(usersRepository.findAll() );
 
-        System.out.println(usersRepository.findByEmail("hdfe@student.21-school.ru") );
+        System.out.println(usersRepository.findByEmail("awoods@student.21-school.ru") );
         System.out.println(usersRepository.findByEmail("senglish@student.21-school.ru") );
         System.out.println(usersRepository.findById(3L));
         System.out.println();

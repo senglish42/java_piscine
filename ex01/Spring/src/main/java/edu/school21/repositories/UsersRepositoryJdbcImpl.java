@@ -10,23 +10,25 @@ import java.util.Optional;
 
 public class UsersRepositoryJdbcImpl implements UsersRepository {
 
-    private final Connection connection;
-    final String UPDATE_QUERY = "UPDATE users SET email = ? WHERE id = ?";
-    final String FIND_ID_QUERY = "SELECT * FROM users WHERE id = ";
-    final String FIND_ALL_QUERY = "SELECT * FROM users";
-    final String FIND_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
-    final String SAVE_QUERY = "INSERT INTO users (email) VALUES (?)";
-    final String DELETE_QUERY = "DELETE FROM users WHERE id = ?";
+    private final Connection connect;
+    final String FIND = "SELECT * FROM users WHERE id = ";
+    final String FIND_ALL = "SELECT * FROM users";
+    final String FIND_EMAIL = "SELECT * FROM users WHERE email = ?";
+    final String SAVE = "INSERT INTO users (email) VALUES (?)";
+    final String UPDATE = "UPDATE users SET email = ? WHERE id = ?";
+    final String DELETE = "DELETE FROM users WHERE id = ?";
+
+
 
     public UsersRepositoryJdbcImpl(DataSource dataSource) throws SQLException {
-        this.connection = dataSource.getConnection();
+        this.connect = dataSource.getConnection();
     }
 
     @Override
     public User findById(Long id) {
         User user = null;
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(FIND_ID_QUERY + id);
+        try (Statement statement = connect.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(FIND + id);
             if (!resultSet.next())
                 return null;
             user = new User(id, resultSet.getString("email"));
@@ -39,9 +41,9 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     @Override
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
-        try (Statement statement = connection.createStatement())
+        try (Statement statement = connect.createStatement())
         {
-            ResultSet resultSet = statement.executeQuery(FIND_ALL_QUERY);
+            ResultSet resultSet = statement.executeQuery(FIND_ALL);
             while(resultSet.next())
                 list.add(new User(resultSet.getLong("id"), resultSet.getString("email")));
         } catch (SQLException e) {
@@ -52,7 +54,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     @Override
     public void save(User entity) {
-        try (PreparedStatement statement = connection.prepareStatement(SAVE_QUERY)) {
+        try (PreparedStatement statement = connect.prepareStatement(SAVE)) {
             statement.setLong(1, entity.getId());
             statement.setString(2, entity.getEmail());
             statement.execute();
@@ -65,7 +67,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     @Override
     public void update(User entity) {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+        try (PreparedStatement statement = connect.prepareStatement(UPDATE)) {
             statement.setString(1, entity.getEmail());
             statement.setLong(2, entity.getId());
             statement.execute();
@@ -76,7 +78,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     @Override
     public void delete(Long id) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
+        try (PreparedStatement preparedStatement = connect.prepareStatement(DELETE)) {
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -87,7 +89,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     @Override
     public Optional<User> findByEmail(String email) {
         User user = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_EMAIL_QUERY)) {
+        try (PreparedStatement preparedStatement = connect.prepareStatement(FIND_EMAIL)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next())
