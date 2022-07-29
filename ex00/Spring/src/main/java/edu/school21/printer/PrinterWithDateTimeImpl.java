@@ -1,8 +1,6 @@
 package edu.school21.printer;
 
 import edu.school21.renderer.Renderer;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 import java.time.LocalDateTime;
 
 public class PrinterWithDateTimeImpl implements Printer {
