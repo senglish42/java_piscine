@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+        <bean id="processorLow" class="edu.school21.preprocessor.PreProcessorToLowerImpl"/>
+        <bean id="processorUp" class="edu.school21.preprocessor.PreProcessorToUpperImpl"/>
+        <bean id="rendererErrLow" class="edu.school21.renderer.RendererErrImpl">
+            <constructor-arg name="pp" ref="processorLow"/>
+        </bean>
+        <bean id="rendererErrUp" class="edu.school21.renderer.RendererErrImpl">
+            <constructor-arg name="pp" ref="processorUp"/>
+        </bean>
+        <bean id="rendererStandLow" class="edu.school21.renderer.RendererStandardImpl">
+            <constructor-arg name="pp" ref="processorLow"/>
+        </bean>
+        <bean id="rendererStandUp" class="edu.school21.renderer.RendererStandardImpl">
+            <constructor-arg name="pp" ref="processorUp"/>
+        </bean>
+
+        <bean id="printerErrLowData" class="edu.school21.printer.PrinterWithDateTimeImpl">
+            <constructor-arg name="rend" ref="rendererErrLow"/>
+        </bean>
+        <bean id="printerErrUpData" class="edu.school21.printer.PrinterWithDateTimeImpl">
+            <constructor-arg name="rend" ref="rendererErrUp"/>
+        </bean>
+        <bean id="printerStandLowData" class="edu.school21.printer.PrinterWithDateTimeImpl">
+            <constructor-arg name="rend" ref="rendererStandLow"/>
+        </bean>
+        <bean id="printerStandUpData" class="edu.school21.printer.PrinterWithDateTimeImpl">
+            <constructor-arg name="rend" ref="rendererStandUp"/>
+        </bean>
+        <bean id="printerErrLowPref" class="edu.school21.printer.PrinterWithPrefixImpl">
+            <constructor-arg name="rend" ref="rendererErrLow"/>
+        </bean>
+        <bean id="printerErrUpPref" class="edu.school21.printer.PrinterWithPrefixImpl">
+            <constructor-arg name="rend" ref="rendererErrUp"/>
+        </bean>
+        <bean id="printerStandLowPref" class="edu.school21.printer.PrinterWithPrefixImpl">
+            <constructor-arg name="rend" ref="rendererStandLow"/>
+        </bean>
+        <bean id="printerStandUpPref" class="edu.school21.printer.PrinterWithPrefixImpl">
+            <constructor-arg name="rend" ref="rendererStandUp"/>
+        </bean>
+
+</beans>
